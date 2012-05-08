@@ -28,9 +28,13 @@
 	MOAI VERSION: 0.7
 	CREATED: 9-9-11
 
-	UPDATED: 4-27-12
+	UPDATED: 5-5-12
 	VERSION: 0.2
 	MOAI VERSION: v1.0 r3
+
+	Changes
+	- Changed function _calcInputOver to use MOAIPartition:propListForPoint instead of MOAIPartition:propForPoint.
+	  Now, windows that are set to be hidden will not accept input.
 ]]
 
 local _M = {}
@@ -260,9 +264,11 @@ end
 function _M.GUI:_calcInputOver(x, y)
 	local inputX, inputY = self._layer:wndToWorld(x, y)
 
-	local prop = self._partition:propForPoint(inputX, inputY, 0, MOAILayer.SORT_PRIORITY_ASCENDING)
-	if (nil ~= prop) then
-		local win = self._propToWindow[prop]
+	local props = {self._partition:propListForPoint(inputX, inputY, 0, MOAILayer.SORT_PRIORITY_ASCENDING)}
+	if (nil == props or #props == 0) then return nil end
+
+	for i, v in ipairs(props) do
+		local win = self._propToWindow[v]
 		if (nil ~= win) then
 			if (true == win:getVisible()) then
 				return win
