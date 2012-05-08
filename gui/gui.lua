@@ -264,7 +264,7 @@ end
 function _M.GUI:_calcInputOver(x, y)
 	local inputX, inputY = self._layer:wndToWorld(x, y)
 
-	local props = {self._partition:propListForPoint(inputX, inputY, 0, MOAILayer.SORT_PRIORITY_ASCENDING)}
+	local props = {self._partition:propListForPoint(inputX, inputY, 0, MOAILayer.SORT_PRIORITY_DESCENDING)}
 	if (nil == props or #props == 0) then return nil end
 
 	for i, v in ipairs(props) do
